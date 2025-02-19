@@ -13,5 +13,5 @@
 2. Open the .env file and edit the database credentials.
 3. run ```composer install``` in the root directory
 4. Generate App key by running ```php artisan key:generate```
-5. Set up database by running  ```php artisan migrate --seed``
+5. Set up database by running  ```php artisan migrate --seed```
 6. Serve by running ```php artisan serve```
