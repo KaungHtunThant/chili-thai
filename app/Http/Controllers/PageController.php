@@ -22,4 +22,14 @@ class PageController extends Controller
         $categories = Category::with('items')->get();
         return view('public.menu', ['categories' => $categories]);
     }
+
+    public function reservation()
+    {
+        return view('public.reservation');
+    }
+
+    public function catering()
+    {
+        return view('public.catering');
+    }
 }

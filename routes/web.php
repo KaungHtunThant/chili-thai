@@ -14,6 +14,10 @@ Route::get('menu', [PageController::class, 'menu']);
 
 Route::get('about', [PageController::class, 'about']);
 
+Route::get('reservation', [PageController::class, 'reservation']);
+
+Route::get('catering', [PageController::class, 'catering']);
+
 Route::post('reservation', [ReservationController::class, 'store']);
 
 Route::post('subscription', [SubscriptionController::class, 'store']);
