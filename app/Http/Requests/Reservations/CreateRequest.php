@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Reservations;
 
+use App\Enums\Reservations\ReservationTypesEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -31,7 +32,7 @@ class CreateRequest extends FormRequest
             'pax' => 'required|integer',
             'event' => 'nullable|string',
             'note' => 'nullable|string',
-            'type' => 'required|in:reservation,catering',
+            'type' => 'required|in:' . implode(',', ReservationTypesEnum::getValues()),
         ];
     }
 }

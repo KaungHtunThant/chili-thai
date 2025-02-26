@@ -9,13 +9,20 @@ use App\Models\Event;
 use App\Notifications\Admins\ReservationNotification as AdminsReservationNotification;
 use App\Notifications\Customers\ReservationNotification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ReservationController extends Controller
 {
     public function store(CreateRequest $request)
     {
         try {
-            if($request->has('event')) {
+            DB::beginTransaction();
+
+            if($request->type == 'catering' && !$request->has('event')) {
+                Throw new \Exception('Event is required for catering');
+            }
+
+            if ($request->has('event')) {
                 $event = Event::where('slug', $request->event)->first();
                 $event_id = $event ? $event->id : null;
             }
@@ -33,6 +40,8 @@ class ReservationController extends Controller
                 'type' => $request->type,
             ]);
 
+            DB::commit();
+
             $reservation->notify(new ReservationNotification());
 
             $user = User::find(0);
@@ -41,9 +50,10 @@ class ReservationController extends Controller
             return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
                 ->with('details', 'Thank you, ' . $reservation->first_name . '! Your reservation for ' . $reservation->pax . ($reservation->pax > 1 ? ' people' : ' person') . ' has been made. We will contact you back shortly.')
-                ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'))
-            ;
+                ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'));
         } catch (\Exception $e) {
+            DB::rollBack();
+
             info('An error occurred while creating the reservation', ['error' => $e]);
             return redirect()->route('reservation.form')->with('status', 500)
                 ->with('message', 'An error occurred while creating the reservation!')

@@ -23,6 +23,15 @@
                 <li class="nav-item">
                     <a class="nav-link me-lg-3" href="/about">About us</a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-lg-3" href="/about">Reservation</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-lg-3" href="/about">Catering</a>
+                </li>
+
                 <div class="d-flex">
                     <a type="button" class="btn btn-success " href="https://www.chilithaicuisine.com/order">Order
                         Now</a>
