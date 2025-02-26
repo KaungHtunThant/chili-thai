@@ -16,7 +16,7 @@ Route::get('about', [PageController::class, 'about']);
 
 Route::get('reservation', [PageController::class, 'reservation'])->name('reservation.form');
 
-Route::get('catering', [PageController::class, 'catering']);
+Route::get('catering', [PageController::class, 'catering'])->name('catering.form');
 
 Route::post('reservation', [ReservationController::class, 'store'])->name('reservation.store');
 

@@ -4,7 +4,7 @@
             <div class="card shadow-lg border-0">
                 <div class="card-body p-5">
                     <h2 class="card-title text-center mb-4 fw-bold">Catering Form</h2>
-                    <form action="{{ route('reserve') }}" method="post">
+                    <form action="{{ route('reservation.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="type" value="catering">
                         <div class="form-group mb-3">
@@ -38,6 +38,9 @@
                         <div class="form-group mb-3">
                             <label for="occasion">Occasion:</label>
                             <select id="occasion" name="occasion" class="form-control" required>
+                                @foreach ($occasions as $occasion)
+                                    <option value="{{ $occasion }}">{{ ucfirst($occasion) }}</option>
+                                @endforeach
                                 <option value="birthday">Birthday</option>
                                 <option value="wedding">Wedding</option>
                                 <option value="corporate">Corporate Event</option>

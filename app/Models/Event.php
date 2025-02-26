@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Event extends Model
 {
@@ -11,11 +12,11 @@ class Event extends Model
 
     protected $fillable = ['name', 'slug'];
 
-    public function getSlugOptions(): array
+    public function getSlugOptions(): SlugOptions
     {
-        return [
-            'source' => 'name',
-        ];
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
     }
 
     public function reservations()

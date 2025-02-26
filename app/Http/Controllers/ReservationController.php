@@ -27,10 +27,10 @@ class ReservationController extends Controller
 
             info('reservation created', ['reservation' => $reservation]);
 
-            return redirect()->route('reservation.form')->with('status', 200)
+            return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
-                ->with('details', 'Thank you, ' . $reservation->first_name . '! Your reservation for ' . $reservation->pax . ($reservation->pax > 1 ? ' people' : ' person') . ' has been confirmed.')
-                ->with('datetime', 'Date: ' . $reservation->date . ' | Time: ' . $reservation->time)
+                ->with('details', 'Thank you, ' . $reservation->first_name . '! Your reservation for ' . $reservation->pax . ($reservation->pax > 1 ? ' people' : ' person') . ' has been made. We will contact you back shortly.')
+                ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'))
             ;
         } catch (\Exception $e) {
             info('An error occurred while creating the reservation', ['error' => $e]);
