@@ -24,9 +24,9 @@ Route::post('subscription', [SubscriptionController::class, 'store'])->name('sub
 
 Route::get('login', function () {
     return view('login');
-});
+})->name('login.form');
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login.submit');
 
 Route::prefix('admin')->group(function () {
     Route::resource('categories', CategoryController::class);

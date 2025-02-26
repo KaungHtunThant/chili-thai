@@ -10,6 +10,7 @@ use App\Notifications\Admins\ReservationNotification as AdminsReservationNotific
 use App\Notifications\Customers\ReservationNotification;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
 
 class ReservationController extends Controller
 {
@@ -48,11 +49,23 @@ class ReservationController extends Controller
 
             DB::commit();
 
+            // $calendar = GoogleCalendarEvent::create([
+            //     'name' => 'Reservation for ' . $reservation->first_name . ' ' . $reservation->last_name . ' at Chili Thai Restaurant',
+            //     'startDateTime' => Carbon::parse($reservation->date . ' ' . $reservation->time),
+            //     'endDateTime' => Carbon::parse($reservation->date . ' ' . $reservation->time)->addHours(2),
+            // ]);
+
+            // $calendar->addAttendee([
+            //     'email' => $reservation->email
+            // ]);
+
+            // $calendar->save();
+
             $reservation->notify(new ReservationNotification());
 
             $user->notify(new AdminsReservationNotification($reservation));
 
-            return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)
+            return redirect()->route(($request->type == 'reservation' ? 'reservation' : 'catering') . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
                 ->with('details', 'Thank you, ' . $reservation->first_name . '! Your reservation for ' . $reservation->pax . ($reservation->pax > 1 ? ' people' : ' person') . ' has been made. We will contact you back shortly.')
                 ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'));

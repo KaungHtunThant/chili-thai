@@ -14,22 +14,22 @@
         <div class="collapse navbar-collapse " id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link me-lg-3" aria-current="page" href="/">Home</a>
+                    <a class="nav-link me-lg-3" aria-current="page" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link me-lg-3" href="/menu">Menu</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link me-lg-3" href="/about">About us</a>
+                    <a class="nav-link me-lg-3" href="{{ route('menu') }}">Menu</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link me-lg-3" href="/about">Reservation</a>
+                    <a class="nav-link me-lg-3" href="{{ route('about') }}">About us</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link me-lg-3" href="/about">Catering</a>
+                    <a class="nav-link me-lg-3" href="{{ route('reservation.form') }}">Reservation</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link me-lg-3" href="{{ route('catering.form') }}">Catering</a>
                 </li>
 
                 <div class="d-flex">
