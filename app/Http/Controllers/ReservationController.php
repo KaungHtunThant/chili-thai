@@ -18,10 +18,16 @@ class ReservationController extends Controller
         try {
             DB::beginTransaction();
 
+            $user = User::find(1);
+            if(!$user) {
+                Throw new \Exception('There was an error while creating the reservation');
+            }
+
             if($request->type == 'catering' && !$request->has('event')) {
                 Throw new \Exception('Event is required for catering');
             }
 
+            $event_id = null;
             if ($request->has('event')) {
                 $event = Event::where('slug', $request->event)->first();
                 $event_id = $event ? $event->id : null;
@@ -44,7 +50,6 @@ class ReservationController extends Controller
 
             $reservation->notify(new ReservationNotification());
 
-            $user = User::find(0);
             $user->notify(new AdminsReservationNotification($reservation));
 
             return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)

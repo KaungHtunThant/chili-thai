@@ -15,6 +15,7 @@
 4. Generate App key by running ```php artisan key:generate```
 5. Set up database by running  ```php artisan migrate --seed```
 6. Serve by running ```php artisan serve```
+7. Start email queue by running ```php artisan queue:work```
 
 <h3>Update Steps</h3>
 
