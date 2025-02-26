@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ItemSeeder::class,
             EventSeeder::class,
+            DefaultUserSeeder::class,
         ]);
     }
 }
