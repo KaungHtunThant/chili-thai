@@ -6,6 +6,9 @@ use App\Models\Reservation;
 use App\Http\Requests\Reservations\CreateRequest;
 use Carbon\Carbon;
 use App\Models\Event;
+use App\Notifications\Admins\ReservationNotification as AdminsReservationNotification;
+use App\Notifications\Customers\ReservationNotification;
+use App\Models\User;
 
 class ReservationController extends Controller
 {
@@ -29,6 +32,11 @@ class ReservationController extends Controller
                 'note' => $request->note,
                 'type' => $request->type,
             ]);
+
+            $reservation->notify(new ReservationNotification());
+
+            $user = User::find(0);
+            $user->notify(new AdminsReservationNotification($reservation));
 
             return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
