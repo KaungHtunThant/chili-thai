@@ -10,7 +10,6 @@ use App\Notifications\Admins\ReservationNotification as AdminsReservationNotific
 use App\Notifications\Customers\ReservationNotification;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
 
 class ReservationController extends Controller
 {
@@ -48,18 +47,6 @@ class ReservationController extends Controller
             ]);
 
             DB::commit();
-
-            // $calendar = GoogleCalendarEvent::create([
-            //     'name' => 'Reservation for ' . $reservation->first_name . ' ' . $reservation->last_name . ' at Chili Thai Restaurant',
-            //     'startDateTime' => Carbon::parse($reservation->date . ' ' . $reservation->time),
-            //     'endDateTime' => Carbon::parse($reservation->date . ' ' . $reservation->time)->addHours(2),
-            // ]);
-
-            // $calendar->addAttendee([
-            //     'email' => $reservation->email
-            // ]);
-
-            // $calendar->save();
 
             $reservation->notify(new ReservationNotification());
 
