@@ -7,9 +7,17 @@
                     <form action="{{ route('reservation.store') }}" method="post">
                         @csrf
                         <input type="hidden" name="type" value="catering">
-                        <div class="form-group mb-3">
-                            <label for="fullname">Full Name:</label>
-                            <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Enter your full name" required>
+                        <div class="row mb-3 form-group">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="first_name"
+                                    placeholder="First Name" required aria-required="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="last_name"
+                                    placeholder="Last Name" required aria-required="true">
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <label for="email">Email:</label>
@@ -21,10 +29,10 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="num_people">Number of People:</label>
-                            <select id="num_people" name="num_people" class="form-control" required>
-                                <?php for ($i = 10; $i <= 30; $i++): ?>
-                                    <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                <?php endfor; ?>
+                            <select id="num_people" name="pax" class="form-control" required>
+                                @for ($i = 10; $i <= 30; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
                         <div class="form-group mb-3">
@@ -33,35 +41,44 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="pickup_time">Pickup Time:</label>
-                            <input type="time" id="pickup_time" name="pickup_time" class="form-control" placeholder="Select a pickup time" required>
+                            <input type="time" id="pickup_time" name="time" class="form-control" placeholder="Select a pickup time" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="occasion">Occasion:</label>
-                            <select id="occasion" name="occasion" class="form-control" required>
-                                @foreach ($occasions as $occasion)
-                                    <option value="{{ $occasion }}">{{ ucfirst($occasion) }}</option>
+                            <select id="occasion" name="event" class="form-control" required>
+                                @foreach ($events as $event)
+                                    <option value="{{ $event->slug }}">{{ ucfirst($event->name) }}</option>
                                 @endforeach
-                                <option value="birthday">Birthday</option>
-                                <option value="wedding">Wedding</option>
-                                <option value="corporate">Corporate Event</option>
-                                <option value="other">Other</option>
                             </select>
                         </div>
                         <div class="form-group mb-3">
                             <label for="special_request">Special Request:</label>
-                            <textarea id="special_request" name="special_request" class="form-control" rows="4" placeholder="Enter any special requests"></textarea>
+                            <textarea id="special_request" name="note" class="form-control" rows="4" placeholder="Enter any special requests"></textarea>
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg fw-bold">Submit</button>
                         </div>
 
-                        <!-- Confirmation Message -->
-                        {{-- <div class="alert alert-success text-center mt-4">
-                            <strong>Catering Request Submitted!</strong><br>
-                            Thank you, {{ $name }}! Your catering request for {{ $person_count }} person(s) has been received.<br>
-                            Date: {{ $date }} | Pickup Time: {{ $time }}<br>
-                            Occasion: {{ $event }}
-                        </div> --}}
+                        {{-- Error Handling --}}
+                        @if (session('status'))
+                            @if (session('status') === 200)
+                                <div class="alert alert-success text-center mt-4">
+                                    <strong>{{ session('message') }}</strong><br>
+                                    {{ session('details') }}
+                                    <br>
+                                    {{ session('datetime') }}
+                                </div>
+                            @else
+                                <div class="alert alert-danger text-center mt-4">
+                                    <strong>{{ session('message') }}</strong>
+                                </div>
+                                @if(config('app.debug') && config('app.env') !== 'production')
+                                    <script>
+                                        console.log({{ session('details') }});
+                                    </script>
+                                @endif
+                            @endif
+                        @endif
                     </form>
                 </div>
             </div>

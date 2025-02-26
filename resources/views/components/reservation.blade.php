@@ -78,6 +78,7 @@
                             <button type="submit" class="btn btn-primary btn-lg fw-bold">Reserve Now</button>
                         </div>
 
+                        {{-- Error Handling --}}
                         @if (session('status'))
                             @if (session('status') === 200)
                                 <div class="alert alert-success text-center mt-4">
