@@ -14,11 +14,11 @@ Route::get('menu', [PageController::class, 'menu']);
 
 Route::get('about', [PageController::class, 'about']);
 
-Route::get('reservation', [PageController::class, 'reservation']);
+Route::get('reservation', [PageController::class, 'reservation'])->name('reservation.form');
 
 Route::get('catering', [PageController::class, 'catering']);
 
-Route::post('reservation', [ReservationController::class, 'store']);
+Route::post('reservation', [ReservationController::class, 'store'])->name('reservation.store');
 
 Route::post('subscription', [SubscriptionController::class, 'store']);
 

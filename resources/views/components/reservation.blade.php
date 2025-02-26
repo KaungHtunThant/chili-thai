@@ -4,17 +4,19 @@
             <div class="card shadow-lg border-0">
                 <div class="card-body p-4">
                     <h2 class="card-title text-center mb-4 fw-bold">Make a Reservation</h2>
-                    <form action="index.php" method="post">
+                    <form action="{{ route('reservation.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="type" value="reservation">
                         <!-- Name Input -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="name" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                <input type="text" class="form-control" id="firstName" name="first_name"
                                     placeholder="First Name" required aria-required="true">
                             </div>
                             <div class="col-md-6">
                                 <label for="name" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                <input type="text" class="form-control" id="lastName" name="last_name"
                                     placeholder="Last Name" required aria-required="true">
                             </div>
                         </div>
@@ -51,7 +53,7 @@
                         <!-- Party Size Selection -->
                         <div class="mb-3">
                             <label for="partySize" class="form-label">Party Size</label>
-                            <select class="form-select" id="partySize" name="partySize" required aria-required="true">
+                            <select class="form-select" id="partySize" name="pax" required aria-required="true">
                                 <option value="" disabled selected>Select number of guests</option>
                                 <option>1</option>
                                 <option>2</option>
@@ -68,7 +70,7 @@
                         <div class="mb-4">
                             <label for="requests" class="form-label">Special Requests</label>
                             <textarea class="form-control" id="requests" rows="3"
-                                placeholder="Any dietary restrictions or seating preferences?"></textarea>
+                                placeholder="Any dietary restrictions or seating preferences?" name="note"></textarea>
                         </div>
 
                         <!-- Submit Button -->
@@ -76,14 +78,25 @@
                             <button type="submit" class="btn btn-primary btn-lg fw-bold">Reserve Now</button>
                         </div>
 
-                        {{-- @if($name)
-                        <div class="alert alert-success text-center mt-4">
-                            <strong>Reservation Successful!</strong><br>
-                            Thank you, {{ $name }}! Your reservation for {{ $person_count }} person(s) has been
-                            confirmed.<br>
-                            Date: {{ $date }} | Time: {{ $time }}
-                        </div>
-                        @endif --}}
+                        @if (session('status'))
+                            @if (session('status') === 200)
+                                <div class="alert alert-success text-center mt-4">
+                                    <strong>{{ session('message') }}</strong><br>
+                                    {{ session('details') }}
+                                    <br>
+                                    {{ session('datetime') }}
+                                </div>
+                            @else
+                                <div class="alert alert-danger text-center mt-4">
+                                    <strong>{{ session('message') }}</strong>
+                                </div>
+                                @if(config('app.debug') && config('app.env') !== 'production')
+                                    <script>
+                                        console.log({{ session('details') }});
+                                    </script>
+                                @endif
+                            @endif
+                        @endif
                     </form>
                 </div>
             </div>

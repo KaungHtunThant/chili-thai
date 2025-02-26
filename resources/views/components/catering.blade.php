@@ -4,7 +4,9 @@
             <div class="card shadow-lg border-0">
                 <div class="card-body p-5">
                     <h2 class="card-title text-center mb-4 fw-bold">Catering Form</h2>
-                    <form action="index.php" method="post">
+                    <form action="{{ route('reserve') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="type" value="catering">
                         <div class="form-group mb-3">
                             <label for="fullname">Full Name:</label>
                             <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Enter your full name" required>

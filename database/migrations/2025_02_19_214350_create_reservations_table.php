@@ -18,11 +18,12 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->nullable();
             $table->string('phone');
-            $table->dateTime('reservation_date');
+            $table->date('date');
+            $table->time('time');
             $table->integer('pax');
             $table->longText('note')->nullable();
             $table->unsignedBigInteger('event_id')->nullable();
-            $table->enum('status', ReservationTypesEnum::cases())->default('pending');
+            $table->enum('type', ReservationTypesEnum::getValues())->default('reservation');
             $table->timestamps();
         });
     }
