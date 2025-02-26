@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Http\Requests\Reservations\CreateRequest;
 use Carbon\Carbon;
+use App\Models\Event;
 
 class ReservationController extends Controller
 {
     public function store(CreateRequest $request)
     {
         try {
-            info('ReservationController@store', ['request' => $request->all()]);
+            if($request->has('event')) {
+                $event = Event::where('slug', $request->event)->first();
+                $event_id = $event ? $event->id : null;
+            }
+
             $reservation = Reservation::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -20,12 +25,10 @@ class ReservationController extends Controller
                 'date' => Carbon::parse($request->date)->toDateString(),
                 'time' => Carbon::parse($request->time)->toTimeString(),
                 'pax' => $request->pax,
-                'event_id' => $request->event_id ?? null,
+                'event_id' => $event_id,
                 'note' => $request->note,
                 'type' => $request->type,
             ]);
-
-            info('reservation created', ['reservation' => $reservation]);
 
             return redirect()->route($request->type == 'reservation' ? 'reservation' : 'catering' . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')

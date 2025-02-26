@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Event;
 
 class PageController extends Controller
 {
@@ -30,6 +30,7 @@ class PageController extends Controller
 
     public function catering()
     {
-        return view('public.catering');
+        $events = Event::select('name', 'slug')->get();
+        return view('public.catering', ['events' => $events]);
     }
 }
