@@ -15,3 +15,8 @@
 4. Generate App key by running ```php artisan key:generate```
 5. Set up database by running  ```php artisan migrate --seed```
 6. Serve by running ```php artisan serve```
+
+<h3>Update Steps</h3>
+
+1. After "git pull", don't forget to run ```php artisan migrate:fresh --seed```
+2. Update the .env file for emails and credentials
