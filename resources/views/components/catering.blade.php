@@ -14,6 +14,7 @@
                                     <br>
                                     {{ session('datetime') }}
                                     <br>
+                                    <br>
                                     <a href="{{ session('google_calendar_url') }}" target="_blank" class="btn btn-primary">Add to Google Calendar</a>
                                 </div>
                             @else
