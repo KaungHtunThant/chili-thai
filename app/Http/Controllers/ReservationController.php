@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use App\Http\Requests\Reservations\CreateRequest;
 use Carbon\Carbon;
 use App\Models\Event;
+use App\Models\Setting;
 use App\Notifications\Admins\ReservationNotification as AdminsReservationNotification;
 use App\Notifications\Customers\ReservationNotification;
 use App\Models\User;
@@ -52,10 +53,13 @@ class ReservationController extends Controller
 
             $user->notify(new AdminsReservationNotification($reservation));
 
+            $google_calendar_url = $this->getGoogleCalendarUrl($reservation);
+
             return redirect()->route(($request->type == 'reservation' ? 'reservation' : 'catering') . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
                 ->with('details', 'Thank you, ' . $reservation->first_name . '! Your reservation for ' . $reservation->pax . ($reservation->pax > 1 ? ' people' : ' person') . ' has been made. We will contact you back shortly.')
-                ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'));
+                ->with('datetime', 'Date: ' . Carbon::parse($reservation->date)->format('m-d-Y') . ' | Time: ' . Carbon::parse($reservation->time)->format('h:i A'))
+                ->with('google_calnedar_url', $google_calendar_url);
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -64,5 +68,17 @@ class ReservationController extends Controller
                 ->with('message', 'An error occurred while creating the reservation!')
                 ->with('details', $e->getMessage());
         }
+    }
+
+    public function getGoogleCalendarUrl(Reservation $reservation): string
+    {
+        $start = $reservation->date . ' ' . $reservation->time;
+        $end = date('Y-m-d H:i', strtotime($start . ' +2 hours'));
+        $app_name = Setting::where('key', 'company_name')->first()->value;
+        $company_location = Setting::where('key', 'company_location')->first()->value;
+
+        $url = 'https://www.google.com/calendar/render?action=TEMPLATE&text=' . urlencode('Reservation at ' . $app_name) . '&dates=' . str_replace('-', '', $start) . '/' . str_replace('-', '', $end) . '&details=' . urlencode($reservation->note) . '&location=' . urlencode($company_location) . '&sf=true&output=xml';
+
+        return $url;
     }
 }

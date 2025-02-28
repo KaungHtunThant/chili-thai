@@ -5,6 +5,28 @@
                 <div class="card-body p-4">
                     <h2 class="card-title text-center mb-4 fw-bold">Make a Reservation</h2>
                     <form action="{{ route('reservation.store') }}" method="post">
+                        {{-- Error Handling --}}
+                        @if (session('status'))
+                            @if (session('status') === 200)
+                                <div class="alert alert-success text-center mt-4">
+                                    <strong>{{ session('message') }}</strong><br>
+                                    {{ session('details') }}
+                                    <br>
+                                    {{ session('datetime') }}
+                                    <br>
+                                    <a href="{{ session('google_calendar_url') }}" target="_blank" class="btn btn-primary">Add to Google Calendar</a>
+                                </div>
+                            @else
+                                <div class="alert alert-danger text-center mt-4">
+                                    <strong>{{ session('message') }}</strong>
+                                </div>
+                                @if(config('app.debug') && config('app.env') !== 'production')
+                                    <script>
+                                        console.log({{ session('details') }});
+                                    </script>
+                                @endif
+                            @endif
+                        @endif
                         @csrf
                         <input type="hidden" name="type" value="reservation">
                         <!-- Name Input -->
@@ -77,27 +99,6 @@
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary btn-lg fw-bold">Reserve Now</button>
                         </div>
-
-                        {{-- Error Handling --}}
-                        @if (session('status'))
-                            @if (session('status') === 200)
-                                <div class="alert alert-success text-center mt-4">
-                                    <strong>{{ session('message') }}</strong><br>
-                                    {{ session('details') }}
-                                    <br>
-                                    {{ session('datetime') }}
-                                </div>
-                            @else
-                                <div class="alert alert-danger text-center mt-4">
-                                    <strong>{{ session('message') }}</strong>
-                                </div>
-                                @if(config('app.debug') && config('app.env') !== 'production')
-                                    <script>
-                                        console.log({{ session('details') }});
-                                    </script>
-                                @endif
-                            @endif
-                        @endif
                     </form>
                 </div>
             </div>
