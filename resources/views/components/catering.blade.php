@@ -60,8 +60,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="date">Date:</label>
-                            <input type="date" id="date" name="date" class="form-control" placeholder="Select a date" required
-                            aria-required="true">
+                            {{-- <input type="date" id="date" name="date" class="form-control" placeholder="Select a date" required> --}}
+                            <input type="date" class="form-control" id="date" name="date" required
+                                    aria-required="true" placeholder="Select Date">
                         </div>
                         <div class="form-group mb-3">
                             <label for="pickup_time">Pickup Time:</label>
