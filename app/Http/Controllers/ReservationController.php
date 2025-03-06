@@ -10,7 +10,10 @@ use App\Models\Setting;
 use App\Notifications\Admins\ReservationNotification as AdminsReservationNotification;
 use App\Notifications\Customers\ReservationNotification;
 use App\Models\User;
+use Google\Service\Calendar;
 use Illuminate\Support\Facades\DB;
+use Spatie\GoogleCalendar\Event as GoogleCalendarEvent;
+
 
 class ReservationController extends Controller
 {
@@ -55,7 +58,8 @@ class ReservationController extends Controller
 
             $google_calendar_url = $this->getGoogleCalendarUrl($reservation);
 
-
+            // $admin_calendar = $this->admin_calendar_create($reservation);
+            // info('Admin calendar event created', ['event' => $admin_calendar]);
 
             return redirect()->route(($request->type == 'reservation' ? 'reservation' : 'catering') . '.form')->with('status', 200)
                 ->with('message', 'Reservation created successfully!')
@@ -82,5 +86,22 @@ class ReservationController extends Controller
         $url = 'https://www.google.com/calendar/render?action=TEMPLATE&text=' . urlencode('Reservation at ' . $app_name) . '&dates=' . $start . '/' . $end . '&details=' . urlencode($reservation->note) . '&location=' . urlencode($company_location) . '&sf=true&output=xml';
 
         return $url;
+    }
+
+    public function admin_calendar_create(Reservation $reservation)
+    {
+        $event = new GoogleCalendarEvent();
+        $event->name = 'Restaurant Reservation for ' . $reservation->first_name . ' ' . $reservation->last_name;
+        $event->description = 'Reservation for ' . $reservation->pax . ' people\nNote: ' . $reservation->note;
+        $event->startDateTime = Carbon::parse($reservation->date . ' ' . $reservation->time);
+        $event->endDateTime = Carbon::parse($reservation->date . ' ' . $reservation->time)->addHours(2);
+        $event->location = Setting::where('key', 'company-location')->first()->value;
+        $event->calendarId = Setting::where('key', 'company-calendar-id')->first()->value;
+        // Need domain wide delegation which is not available in free version
+        // $event->addAttendee(['email' => Setting::where('key', 'company-email')->first()->value]);
+        // $event->addAttendee(['email' => $reservation->email]);
+        $event->save();
+
+        return $event;
     }
 }
