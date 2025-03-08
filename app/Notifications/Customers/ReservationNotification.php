@@ -38,8 +38,8 @@ class ReservationNotification extends Notification
     {
         return (new MailMessage)
             ->from(config('mail.from.address'), config('app.name'))
-            ->subject('New Reservation')
-            ->view('emails.admins.reservation', ['reservation' => $this->reservation]);
+            ->subject('Reservation Made')
+            ->view('emails.customer.reservation', ['reservation' => $this->reservation]);
     }
 
     /**
