@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Admins;
 
+use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,12 +12,13 @@ class ReservationNotification extends Notification
 {
     use Queueable;
 
+    protected $reservation;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Reservation $reservation)
     {
-        //
+        $this->reservation = $reservation;
     }
 
     /**
@@ -37,10 +39,7 @@ class ReservationNotification extends Notification
         return (new MailMessage)
             ->from(config('mail.from.address'), config('app.name'))
             ->subject('New Reservation')
-            ->greeting('Hello, admin!')
-            ->line('You have a new reservation. Please check the admin panel for more details.')
-            ->action('Admin Portal', url(config('app.url') . '/admin'))
-            ->line('Thank you for using our service!');
+            ->view('emails.admin.reservation', ['reservation' => $this->reservation]);
     }
 
     /**

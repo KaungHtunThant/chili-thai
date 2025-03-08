@@ -6,17 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Reservation;
 
 class ReservationNotification extends Notification
 {
     use Queueable;
 
+    protected $reservation;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(Reservation $reservation)
     {
-        //
+        $this->reservation = $reservation;
     }
 
     /**
@@ -37,11 +39,7 @@ class ReservationNotification extends Notification
         return (new MailMessage)
             ->from(config('mail.from.address'), config('app.name'))
             ->subject('Reservation Made')
-            ->greeting('Hello, dear customer!')
-            ->line('A reservation has been made with this email. Kindly wait for confirmation mail or phone call from us.')
-            ->line('If you have any questions, please contact us anytime!')
-            ->action('Contact Us', url('tel:' . config('app.phone')))
-            ->line('Thank you for using our service!');
+            ->view('emails.customer.reservation', ['reservation' => $this->reservation]);
     }
 
     /**
