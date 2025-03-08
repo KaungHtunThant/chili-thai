@@ -19,12 +19,6 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        info($request->all());
-        // $request->validate([
-        //     'name' => 'required',
-        //     'slug' => 'nullable',
-        // ]);
-
         Category::create($request->all());
 
         return response()->json(['message' => 'Category created!']);
