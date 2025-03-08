@@ -55,7 +55,7 @@
                             <h1 class="email-title">Hello, admin!</h1>
                             <p class="email-text">You have a new reservation. Please check the following details for
                                 reservation:</p>
-                            <ul>
+                            <ul class="email-text">
                                 <li>
                                     First_Name: {{ $reservation->first_name }}
                                 </li>

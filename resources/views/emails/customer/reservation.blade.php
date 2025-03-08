@@ -44,6 +44,18 @@
             width: auto;
         }
 
+        .email-button:hover {
+            background: #444444;
+        }
+
+        .email-button:active {
+            color: #fff;
+        }
+
+        .email-button:focus {
+            color: #fff;
+        }
+
         .email-footer-title {
             color: #555;
             text-align: center;
@@ -75,19 +87,11 @@
                 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0" class="email-content">
                     <tr>
                         <td align="center" class="email-header">
-                            <img src="./img/logo.png" alt="logo" class="email-logo">
+                            <img src="{{ storage('/img/logo.png') }}" alt="logo" class="email-logo">
                             <h1 class="email-title">Dear <!-- first Name -->!</h1>
                             <p class="email-text">Thank you for your reservation at Chili Thai Cuisine. We are delighted to
                                 confirm your reservation as follows:</p>
-                            <ul>
-                                <li>
-                                    First Name:
-                                    Date:
-                                    Time:
-                                    Party-size:
-                                </li>
-                            </ul>
-                            <ul>
+                            <ul class="email-text">
                                 <li>
                                     First_Name: {{ $reservation->first_name }}
                                 </li>
@@ -108,7 +112,7 @@
                                 </li>
                             </ul>
                             <p class="email-text"> If you have any question, please contact us anytime!</p>
-                            <a href="#chili-thai-website" class="email-button">Contact Us</a>
+                            <a href="{{ config('app.url') }}" class="email-button">Contact Us</a>
                             <p class="email-text"> Thank you for using our service!</p>
                             <p class="email-text"> Regards,<br> Chili Thai Cuisine</p>
                             <hr>
