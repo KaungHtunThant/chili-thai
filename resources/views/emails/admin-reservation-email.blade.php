@@ -57,14 +57,28 @@
                                 reservation:</p>
                             <ul>
                                 <li>
-                                    First_Name:
-                                    Last_Name:
-                                    Email:
-                                    Phone Number:
-                                    Date:
-                                    Time:
-                                    Party_size:
-                                    Any special request:
+                                    First_Name: {{ $reservation->first_name }}
+                                </li>
+                                <li>
+                                    Last_Name: {{ $reservation->last_name }}
+                                </li>
+                                <li>
+                                    Email: {{ $reservation->email }}
+                                </li>
+                                <li>
+                                    Phone Number: {{ $reservation->phone }}
+                                </li>
+                                <li>
+                                    Date: {{ $reservation->date }}
+                                </li>
+                                <li>
+                                    Time: {{ $reservation->time }}
+                                </li>
+                                <li>
+                                    Party_size: {{ $reservation->pax }}
+                                </li>
+                                <li>
+                                    Any special request: {{ $reservation->notes }}
                                 </li>
                             </ul>
                             <p class="email-text">Thanks you for using our service!</p>

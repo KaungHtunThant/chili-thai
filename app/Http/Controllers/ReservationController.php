@@ -52,7 +52,7 @@ class ReservationController extends Controller
 
             DB::commit();
 
-            $reservation->notify(new ReservationNotification());
+            $reservation->notify(new ReservationNotification($reservation));
 
             $user->notify(new AdminsReservationNotification($reservation));
 

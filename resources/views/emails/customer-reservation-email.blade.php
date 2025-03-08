@@ -87,6 +87,26 @@
                                     Party-size:
                                 </li>
                             </ul>
+                            <ul>
+                                <li>
+                                    First_Name: {{ $reservation->first_name }}
+                                </li>
+                                <li>
+                                    Last_Name: {{ $reservation->last_name }}
+                                </li>
+                                <li>
+                                    Date: {{ $reservation->date }}
+                                </li>
+                                <li>
+                                    Time: {{ $reservation->time }}
+                                </li>
+                                <li>
+                                    Party_size: {{ $reservation->pax }}
+                                </li>
+                                <li>
+                                    Any special request: {{ $reservation->notes }}
+                                </li>
+                            </ul>
                             <p class="email-text"> If you have any question, please contact us anytime!</p>
                             <a href="#chili-thai-website" class="email-button">Contact Us</a>
                             <p class="email-text"> Thank you for using our service!</p>
